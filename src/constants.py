@@ -1,0 +1,1 @@
+ALLOWED_STATUSES = ("created", "in_progress", "done", "archived")
