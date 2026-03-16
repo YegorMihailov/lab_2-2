@@ -2,14 +2,31 @@
 
 ## Структура проекта
 
- <pre>
-    lab_2-1/
+<pre>
+    lab_2-2/
 ├── src/
-│ └── main.py # Подсистема приема задач
+│   ├── descriptors/          # Дескрипторы
+│   │   ├── __init__.py 
+│   │   └── integer_range.py  # Дескриптор IntegerRange
+│   ├── models/              
+│   │   ├── __init__.py      
+│   │   └── task.py           # Класс Task
+│   ├── sources/              # Источники получения задач
+│   │   ├── __init__.py       
+│   │   ├── api.py            # Источник ApiTaskSource
+│   │   ├── base.py           # Протокол TaskSource
+│   │   ├── file_source.py    # Источник FileTaskSource
+│   │   └── generator.py      # Источник GeneratorTaskSource
+│   ├── __init__.py           
+│   ├── constants.py          # Константы
+│   └── main.py               # Точка входа
 ├── tests/
-│ └── test_main.py # Тесты
-├── requirements.txt
-└── README.md
+│   ├── __init__.py
+│   └── test_main.py          # Тесты                
+├── .gitignore                
+├── pyproject.toml            
+├── README.md                 # Документация
+└── requirements.txt          # Зависимости
 </pre>
 
 ## Модель задачи Task

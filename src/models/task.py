@@ -1,5 +1,5 @@
 import datetime
-from ..descriptors.integer_range import IntegerRange
+from ..descriptors import IntegerRange
 from ..constants import ALLOWED_STATUSES
 
 

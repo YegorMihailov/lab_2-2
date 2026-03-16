@@ -1,8 +1,6 @@
 import pytest, json, random, datetime
 from src.main import run_tasks
-from src.sources import GeneratorTaskSource
-from src.sources import ApiTaskSource
-from src.sources import FileTaskSource
+from src.sources import GeneratorTaskSource, ApiTaskSource, FileTaskSource
 from src.models import Task
 
 
