@@ -1,5 +1,10 @@
-from src.main import *
-import pytest, json
+import pytest, json, random, datetime
+from src.main import run_tasks
+from src.sources import GeneratorTaskSource
+from src.sources import ApiTaskSource
+from src.sources import FileTaskSource
+from src.models import Task
+
 
 def test_run_tasks(tmp_path):
     """Test that all task sources return valid Task objects"""
