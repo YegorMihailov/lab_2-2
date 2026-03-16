@@ -1,26 +1,32 @@
 from typing import runtime_checkable, Protocol
-from dataclasses import dataclass
 import random, time, json, datetime
 from src.constants import ALLOWED_STATUSES
 
-# удалить description из payload
-
 
 class IntegerRange:
+    """Data descriptor that validates if integer falls within a specified range"""
     
     def __init__(self, min_value: int = 1, max_value: int = None):
+        """Initialize the descriptor with minimum and optional maximum values"""
+
         self.min_value = min_value
         self.max_value = max_value
     
     def __set_name__(self, owner, name):
+        """Set the private attribute name"""
+
         self.private_name = f"_{name}"
 
     def __get__(self, instance, owner):
+        """Retrieve value from instance or return the descriptor if accessed via class"""
+
         if instance is None:
             return self
         return getattr(instance, self.private_name)
     
     def __set__(self, instance, value):
+        """Сheck the value within the range and set the value"""
+
         if not isinstance(value, int):
             raise TypeError()
         if value < self.min_value:
@@ -32,7 +38,7 @@ class IntegerRange:
 
 
 class Task:
-    """Unit of work with id and data payload"""
+    """Unit of work with id, data payload, status, priority, and time created at"""
 
     __slots__ = ('_id', '_priority', '_status', '_created_at', 'payload')
 
@@ -41,6 +47,8 @@ class Task:
     payload: dict
 
     def __init__(self, id: int, description: str, priority: int, payload = None):
+        """Initialize Task instance and validate its attributes"""
+
         self.payload = payload or {}
         self.id = id
         self.status = 'created'
@@ -50,10 +58,14 @@ class Task:
         self._created_at = datetime.datetime.now()      
 
     def __repr__(self):
+        """Return a string representation of the Task"""
+
         return f"Task(id={self.id}, status='{self.status}', priority={self.priority}, description={self.description}, created_at={self.created_at})"  
 
     @classmethod
     def verify_status(cls, status):
+        """Validate the provided status"""
+
         if not isinstance(status, str):
             raise TypeError('Status should be string')
         if status not in ALLOWED_STATUSES:
@@ -61,15 +73,21 @@ class Task:
 
     @property
     def status(self) -> str:
+        """Get the current status of the task"""
+
         return self._status
     
     @status.setter
-    def status(self, status):
+    def status(self, status: str):
+        """Set the task status after validation"""
+
         self.verify_status(status)
         self._status = status
 
     @classmethod
     def verify_description(cls, description):
+        """Validate the description of the task"""
+
         if not isinstance(description, str):
             raise TypeError('Description should be string')
         if len(description) <= 5:
@@ -77,18 +95,26 @@ class Task:
 
     @property
     def description(self) -> str:
+        """Retrieve the description from payload"""
+
         return self.payload.get('description', '')
     
     @description.setter
-    def description(self, description):
+    def description(self, description: str):
+        """Validate the description and store it in payload"""
+
         self.verify_description(description)
         self.payload['description'] = description
     
     @property
     def created_at(self) -> datetime.datetime:
+        """Get the task timestamp"""
+
         return self._created_at
     
     def __getattr__(self, name):
+        """Provide dynamic access to keys stored in payload"""
+
         if name in self.payload:
             return self.payload[name]
         
@@ -96,6 +122,8 @@ class Task:
     
     @property
     def ready_to_start(self) -> bool:
+        """Determine if the task is ready to be start"""
+
         try:
             self.verify_description(self.description)
         

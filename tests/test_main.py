@@ -66,7 +66,8 @@ def test_file_task_source_not_found():
     assert "Error" in str(err.value)
 
 def test_task_creation_and_properties():
-    """Проверка создания задачи и работы свойств"""
+    """Test task creation"""
+
     task = Task(id=1, description="Task description", priority=4, payload={"order_id": 232})
     
     assert task.id == 1
@@ -77,24 +78,28 @@ def test_task_creation_and_properties():
     assert task.order_id == 232
 
 def test_task_invalid_id():
-    """Проверка валидации дескриптора IntegerRange для id"""
+    """Test IntegerRange for invalid task id"""
+
     with pytest.raises(ValueError):
         Task(id=0, description="Task description", priority=3)
     with pytest.raises(TypeError):
         Task(id="1", description="Task description", priority=3)
 
 def test_task_invalid_priority():
-    """Проверка валидации дескриптора IntegerRange для priority (min/max)"""
+    """Test IntegerRange for invalid task priority"""
+
     with pytest.raises(ValueError):
         Task(id=1, description="Valid Desc", priority=6)
 
 def test_task_invalid_description():
-    """Проверка валидации свойства description"""
+    """Test invalid task description"""
+
     with pytest.raises(ValueError):
         Task(id=1, description="A", priority=3)
 
 def test_task_ready_to_start():
-    """Проверка вычисляемого свойства ready_to_start"""
+    """Test task computed property ready_to_start"""
+
     task = Task(id=1, description="Task description", priority=3)
     assert task.ready_to_start is True
     
